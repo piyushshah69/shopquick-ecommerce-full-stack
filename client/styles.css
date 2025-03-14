@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2563eb;
+  /* Blue - Can be used for buttons, accents, etc. */
+  --color-primary-hover: #1d4ed8;
+  /* Slightly darker blue for hover states */
+
+  --color-secondary: #f97316;
+  /* Orange - For calls to action, highlights */
+  --color-secondary-hover: #ea580c;
+  /* Slightly darker orange for hover states */
+
+  --color-accent: #eab308;
+  /* Yellow - Sparingly for subtle highlights */
+
+  --color-background: #f8fafc;
+  /* Light gray - Overall background */
+  --color-card: #ffffff;
+  /* White - For cards and content sections */
+
+  --color-text-primary: #111827;
+  /* Dark gray - Main body text */
+  --color-text-secondary: #374151;
+  /* Gray - For secondary text, labels */
+  --color-text-links: #1d4ed8;
+  /* Blue - Link color */
+
+  --color-success: #16a34a;
+  /* Green - For success messages */
+  --color-warning: #facc15;
+  /* Yellow - For warnings */
+  --color-error: #dc2626;
+  /* Red - For error messages */
+
+  --animate-loop-scroll: loop-scroll 10s linear infinite;
+  @keyframes loop-scroll{
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-160%);
+      }
+  }
+}
