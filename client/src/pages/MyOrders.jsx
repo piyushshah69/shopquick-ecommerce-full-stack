@@ -1,63 +1,26 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { fetchUserOrders } from "../redux/slices/orderSlice";
 
 function MyOrders() {
-  const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { orders, loading, error } = useSelector((state) => state.orders);
 
   useEffect(() => {
-    setTimeout(() => {
-      const mockOrders = [
-        {
-          _id: "123",
-          createdAt: new Date(),
-          shippingAddress: { city: "Indore", state: "Madhya Pradesh", country: "India" },
-          orderItems: [
-            {
-              name: "Product 1",
-              image: "https://picsum.photos/500?random=1",
-            },
-          ],
-          totalPrice: 4000,
-          isPaid: false,
-        },
-        {
-          _id: "123456",
-          createdAt: new Date(),
-          shippingAddress: { city: "Indore", state: "Madhya Pradesh", country: "India" },
-          orderItems: [
-            {
-              name: "Product 1",
-              image: "https://picsum.photos/500?random=1",
-            },
-          ],
-          totalPrice: 4000,
-          isPaid: true,
-        },
-        {
-          _id: "123456789",
-          createdAt: new Date(),
-          shippingAddress: { city: "Indore", state: "Madhya Pradesh", country: "India" },
-          orderItems: [
-            {
-              name: "Product 1",
-              image: "https://picsum.photos/500?random=1",
-            },
-          ],
-          totalPrice: 4000,
-          isPaid: true,
-        }
-      ];
-      setOrders(mockOrders);
-    }, 1000);
-  }, []);
+    dispatch(fetchUserOrders());
+  }, [dispatch]);
 
   const handleRowClick = (id) => {
     navigate(`/order/${id}`)
   }
 
+  if(loading) return <p>Loading...</p>
+  if (error) return <p>Error: {error}</p>
+
   return (
-    <div className="max-w-7xl mx-auto sm:p-6">
+    <div className="max-w-7xl mx-auto lg:p-6">
       <h2 className="tet-xl sm:text-2xl font-semibold mb-6">
         My Orders
       </h2>
@@ -92,13 +55,13 @@ function MyOrders() {
                     {new Date(order.createdAt).toLocaleTimeString()}
                   </td>
                   <td className="p-2 sm:p-4">
-                    {order.shippingAddress ? `${order.shippingAddress.city}, ${order.shippingAddress.state}, ${order.shippingAddress.country},` : "N/A"}
+                    {order.shippingAddress ? `${order.shippingAddress.city}, ${order.shippingAddress.country},` : "N/A"}
                   </td>
                   <td className="p-2 sm:p-4">
                     {order.orderItems.length}
                   </td>
                   <td className="p-2 sm:p-4">
-                    ₹{order.totalPrice}
+                    ₹{order.totalPrice.toFixed(2)}
                   </td>
                   <td className="p-2 sm:p-4">
                     <span className={`p-1 rounded text-xs sm:text-sm ${order.isPaid ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>

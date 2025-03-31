@@ -5,11 +5,16 @@ import CartDrawer from "../Layout/CartDrawer";
 import { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import logo from '../../assets/shop-quick-logo.png';
+import { useSelector } from "react-redux";
 
 function NavBar() {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
+  const { cart } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
+
+  const cartItemCount = cart?.products?.reduce((total, product) => total + product.quantity, 0) || 0;
 
   const toggleNavDrawer = () => {
     setIsNavDrawerOpen(!isNavDrawerOpen);
@@ -27,30 +32,30 @@ function NavBar() {
           </Link>
         </div>
         <div className="hidden md:flex space-x-6">
-          <Link to="/collections/all" className="text-gray-700 hover:text-black text-sm font-medium uppercase">
-            kids
-          </Link>
-          <Link to="#" className="text-gray-700 hover:text-black text-sm font-medium uppercase">
-            Women
-          </Link>
-          <Link to="#" className="text-gray-700 hover:text-black text-sm font-medium uppercase">
+          <Link to="/collections/all?gender=Men" className="text-gray-700 hover:text-black text-sm font-medium uppercase">
             Men
           </Link>
-          <Link to="#" className="text-gray-700 hover:text-black text-sm font-medium uppercase">
+          <Link to="/collections/all?gender=Women" className="text-gray-700 hover:text-black text-sm font-medium uppercase">
+            Women
+          </Link>
+          <Link to="/collections/all?category=Top Wear" className="text-gray-700 hover:text-black text-sm font-medium uppercase">
             Top Wear
           </Link>
-          <Link to="#" className="text-gray-700 hover:text-black text-sm font-medium uppercase">
+          <Link to="/collections/all?category=Bottom Wear" className="text-gray-700 hover:text-black text-sm font-medium uppercase">
             Bottom Wear
           </Link>
         </div>
         <div className="flex items-center space-x-4">
-          <Link to="/admin" className="block bg-black px-2 rounded text-sm text-white">Admin</Link>
+          {user && user.role === "admin" && (
+            <Link to="/admin" className="block bg-black px-2 rounded text-sm text-white">Admin</Link>
+
+          )}
           <Link to="/profile">
             <HiOutlineUser className="w-6 h-6 text-gray-700 hover:text-black" />
           </Link>
           <button onClick={toggleCartDrawer} className="relative cursor-pointer text-gray-700">
             <HiOutlineShoppingBag className="w-6 h-6 text-gray-700 hover:text-black" />
-            <span className="absolute -top-1 -right-2 bg-primary text-white text-[10px] rounded-full w-5 h-5 grid place-content-center">14</span>
+            {cartItemCount > 0 && <span className="absolute -top-1 -right-2 bg-primary text-white text-[10px] rounded-full w-5 h-5 grid place-content-center">{cartItemCount}</span>}
           </button>
           {/* Search */}
           <SearchBar />
@@ -67,11 +72,10 @@ function NavBar() {
         <div className="p-4">
           <h3 className="text-xl mb-4 font-semibold">Categories</h3>
           <nav className="space-y-4">
-            <Link to="#" onClick={toggleNavDrawer} className="block text-gray-700 hover:text-black">Kids</Link>
-            <Link to="#" onClick={toggleNavDrawer} className="block text-gray-700 hover:text-black">Women</Link>
-            <Link to="#" onClick={toggleNavDrawer} className="block text-gray-700 hover:text-black">Men</Link>
-            <Link to="#" onClick={toggleNavDrawer} className="block text-gray-700 hover:text-black">Top Wear</Link>
-            <Link to="#" onClick={toggleNavDrawer} className="block text-gray-700 hover:text-black">Bottom Wear</Link>
+            <Link to="/collections/all?gender=Men" onClick={toggleNavDrawer} className="block text-gray-700 hover:text-black">Men</Link>
+            <Link to="/collections/all?gender=Women" onClick={toggleNavDrawer} className="block text-gray-700 hover:text-black">Women</Link>
+            <Link to="/collections/all?category=Top Wear" onClick={toggleNavDrawer} className="block text-gray-700 hover:text-black">Top Wear</Link>
+            <Link to="/collections/all?category=Bottom Wear" onClick={toggleNavDrawer} className="block text-gray-700 hover:text-black">Bottom Wear</Link>
           </nav>
         </div>
       </div>

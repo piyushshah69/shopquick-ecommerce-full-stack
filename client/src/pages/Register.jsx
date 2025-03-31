@@ -1,22 +1,46 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import shopQuickLogo from "../assets/shop-quick-logo.png"
 import registerImage from "../assets/login.webp"
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { registerUser } from "../redux/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { mergeCart } from "../redux/slices/cartSlice";
 
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user, guestId, loading } = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.cart);
 
-  const handleSubmit = (e) => {
+  // Get redirect parameter and check if it is checkout or else
+  const redirect = new URLSearchParams(location.search).get("redirect") || "/";
+  const isCheckoutRedirect = redirect.includes("checkout");
+
+  useEffect(() => {
+    if (user) {
+      if (cart?.products.length > 0 && guestId) {
+        dispatch(mergeCart({ guestId, user })).then(() => {
+          navigate(isCheckoutRedirect ? "/checkout" : "/");
+        })
+      } else {
+        navigate(isCheckoutRedirect ? "/checkout" : "/");
+      }
+    }
+  }, [user, guestId, cart, navigate, isCheckoutRedirect, dispatch]);
+
+  const handleRegister = (e) => {
     e.preventDefault();
-    console.log({name, email, password});
+    dispatch(registerUser({ name, email, password }))
   }
 
   return (
     <div className="flex">
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center p-8 md:p-12">
-        <form className="w-full max-w-md bg-white p-8 rounded-lg border border-gray-300 shadow">
+        <form className="w-full max-w-md bg-white p-8 rounded-lg border border-gray-300 shadow" onSubmit={(e) => handleRegister(e)}>
           <div className="flex justify-center mb-6">
             <img src={shopQuickLogo} className="w-24" />
           </div>
@@ -31,21 +55,20 @@ function Register() {
           </div>
           <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">Email</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+            <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)}
               className="w-full p-2 border border-gray-400 rounded"
               placeholder="Enter your email address"
             />
           </div>
           <div className="mb-4">
             <label className="block text-sm font-semibold mb-2">Password</label>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+            <input required type="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8}
               className="w-full p-2 border border-gray-400 rounded"
               placeholder="Enter your password"
             />
           </div>
-          <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:bg-gray-800 transition cursor-pointer"
-          onClick={(e)=>handleSubmit(e)}>Register</button>
-          <p className="mt-4 text-center text-sm">Don't have an account? <Link to='/login' className="text-blue-500">Login now</Link>
+          <button type="submit" className="w-full bg-black text-white p-2 rounded-lg font-semibold hover:bg-gray-800 transition cursor-pointer">{loading ? "Loading..." : "Register"}</button>
+          <p className="mt-4 text-center text-sm">Don't have an account? <Link to={`/login?redirect=${encodeURIComponent(redirect)}`} className="text-blue-500">Login now</Link>
           </p>
         </form>
       </div>

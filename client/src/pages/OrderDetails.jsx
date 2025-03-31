@@ -1,38 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom"
+import { fetchOrderDetails } from "../redux/slices/orderSlice";
 
 function OrderDetails() {
   const { id } = useParams();
-  const [orderDetails, setOrderDetails] = useState(null);
+  const dispatch = useDispatch();
+  const { orderDetails, loading, error } = useSelector((state) => state.orders);
 
   useEffect(() => {
-    const mockOrderDetails = {
-      _id: id,
-      createdAt: new Date(),
-      isPaid: true,
-      isDelivered: false,
-      paymentMethod: "PayPal",
-      shippingMethod: "Standard",
-      shippingAddress: { city: "New York", country: "USA" },
-      orderItems: [
-        {
-          productId: "1",
-          name: "Jacket",
-          price: 125,
-          quantity: 2,
-          image: "https://picsum.photos/150?random=1",
-        },
-        {
-          productId: "2",
-          name: "T-Shirt",
-          price: 50,
-          quantity: 1,
-          image: "https://picsum.photos/150?random=2",
-        },
-      ],
-    };
-    setOrderDetails(mockOrderDetails);
-  }, [id]);
+    dispatch(fetchOrderDetails(id));
+  }, [dispatch, id]);
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error: {error}</p>
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 ">
@@ -89,9 +70,9 @@ function OrderDetails() {
                         {item.name}
                       </Link>
                     </td>
-                    <td className="py-2 px-4">${item.price}</td>
-                    <td className="py-2 px-4">{item.quantity}</td>
-                    <td className="py-2 px-4">{item.quantity * item.price}</td>
+                    <td className="py-2 px-4 text-center">${item.price}</td>
+                    <td className="py-2 px-4 text-center">{item.quantity}</td>
+                    <td className="py-2 px-4 text-center">{item.quantity * item.price}</td>
                   </tr>
                 })}
               </tbody>

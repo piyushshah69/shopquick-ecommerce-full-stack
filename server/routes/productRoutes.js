@@ -180,7 +180,7 @@ router.get("/", async (req, res) => {
       query.brand = { $in: brand.split(",") };
     }
     if (size) {
-      query.size = { $in: size.split(",") };
+      query.sizes = { $in: size.split(",") };
     }
     if (color) {
       query.colors = { $in: [color] };

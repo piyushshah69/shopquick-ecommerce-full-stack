@@ -9,8 +9,8 @@ const router = express.Router();
 // @access Private/Admin
 router.get("/", protect, admin, async (req, res) => {
   try {
-    const user = await User.find({});
-    res.json(user);
+    const users = await User.find({});
+    res.json(users);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error!");
