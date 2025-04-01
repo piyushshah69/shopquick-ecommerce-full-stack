@@ -1,4 +1,4 @@
-<img src="./client/src/assets/shop-quick-logo.png" width="100px" />
+<img src="./client/src/assets/shop-quick-logo.png" width="140px" />
 
 # ShopQuick - Full Stack E-Commerce Application.
 
