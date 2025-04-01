@@ -11,12 +11,9 @@ ShopQuick is a fully functional **eCommerce application** built using the **MERN
 ## Table of Contents
 
 - [Project Overview](#project-overview)
-- [Features](#features)
-- [Technologies](#technologies)
-- [Schema Diagram](#schema-diagram)
+- [Features](#key-features)
+- [Technologies](#technologies-used)
 - [Getting Started](#getting-started)
-- [Usage](#usage)
-- [License](#license)
 
 ## Project Overview
 
