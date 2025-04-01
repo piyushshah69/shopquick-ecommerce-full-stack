@@ -1,4 +1,4 @@
-<img src="./client/src/assets/shop-quick-logo.png" width="100px>
+<img src="./client/src/assets/shop-quick-logo.png" width="100px />
 # ShopQuick - Full Stack E-Commerce Application.
 
 ShopQuick is a fully functional **eCommerce application** built using the **MERN (MongoDB, Express.js, React.js, Node.js) stack**. It provides a seamless shopping experience with features such as product management, user authentication, order processing, and **PayPal payment integration**.  
