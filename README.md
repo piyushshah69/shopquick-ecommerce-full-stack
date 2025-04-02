@@ -17,7 +17,7 @@ ShopQuick is a fully functional **eCommerce application** built using the **MERN
 
 ## Project Overview
 
-The project is a social networking platform built using the MERN (MongoDB, Express.js, React.js, Node.js) stack. It incorporates two major features: an automated content moderation system and context-based authentication. These features are accompanied by common functionalities found in social media applications, such as profile creation, post creation and sharing, liking and commenting on posts, and following/unfollowing users.
+The project is a web based E-Commerce platform built using the MERN (MongoDB, Express.js, React.js, Node.js) stack.
 
 ## **Key Features**  
 
